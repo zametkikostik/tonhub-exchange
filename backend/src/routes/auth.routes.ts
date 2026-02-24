@@ -8,10 +8,6 @@ import { ApiError, ErrorCodes } from '../types';
 
 export const authRoutes = Router();
 
-/**
- * POST /api/auth/telegram
- * Authenticate user with Telegram WebApp initData
- */
 authRoutes.post('/telegram', async (req, res, next) => {
   try {
     const { initData } = req.body;
@@ -24,17 +20,14 @@ authRoutes.post('/telegram', async (req, res, next) => {
       );
     }
 
-    // Validate Telegram initData
     const validatedData = validateTelegramInitData(initData);
-    const telegramId = validatedData.user.id.toString();
+    const telegramId = BigInt(validatedData.user.id);
 
-    // Find or create user
     let user = await prisma.user.findUnique({
       where: { telegramId },
     });
 
     if (!user) {
-      // Create new user
       user = await prisma.user.create({
         data: {
           telegramId,
@@ -46,7 +39,6 @@ authRoutes.post('/telegram', async (req, res, next) => {
         },
       });
 
-      // Create initial balances
       await prisma.balance.createMany({
         data: [
           { userId: user.id, currency: 'TON' },
@@ -55,7 +47,6 @@ authRoutes.post('/telegram', async (req, res, next) => {
         ],
       });
     } else {
-      // Update user info
       await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -68,7 +59,6 @@ authRoutes.post('/telegram', async (req, res, next) => {
       });
     }
 
-    // Generate tokens
     const tokens = generateTokens({
       userId: user.id.toString(),
       telegramId: user.telegramId.toString(),
@@ -100,10 +90,6 @@ authRoutes.post('/telegram', async (req, res, next) => {
   }
 });
 
-/**
- * POST /api/auth/refresh
- * Refresh access token
- */
 authRoutes.post('/refresh', async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
@@ -116,9 +102,8 @@ authRoutes.post('/refresh', async (req, res, next) => {
       );
     }
 
-    // Verify refresh token and check in database
     const session = await prisma.session.findUnique({
-      where: { refreshToken },
+      where: { id: refreshToken },
       include: { user: true },
     });
 
@@ -130,13 +115,11 @@ authRoutes.post('/refresh', async (req, res, next) => {
       );
     }
 
-    // Generate new tokens
     const tokens = generateTokens({
       userId: session.user.id.toString(),
       telegramId: session.user.telegramId.toString(),
     });
 
-    // Update session
     await prisma.session.update({
       where: { id: session.id },
       data: { refreshToken: tokens.refreshToken },
@@ -155,37 +138,12 @@ authRoutes.post('/refresh', async (req, res, next) => {
   }
 });
 
-/**
- * POST /api/auth/logout
- * Logout user (invalidate refresh token)
- */
-authRoutes.post('/logout', authMiddleware, async (req, res, next) => {
-  try {
-    const { refreshToken } = req.body;
-
-    if (refreshToken) {
-      await prisma.session.deleteMany({
-        where: { refreshToken },
-      });
-    }
-
-    res.json({
-      success: true,
-      data: { message: 'Logged out successfully' },
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-/**
- * GET /api/auth/me
- * Get current user info
- */
 authRoutes.get('/me', authMiddleware, async (req, res, next) => {
   try {
+    const telegramId = BigInt(req.user!.telegramId);
+
     const user = await prisma.user.findUnique({
-      where: { telegramId: req.user!.telegramId },
+      where: { telegramId },
     });
 
     if (!user) {
