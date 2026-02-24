@@ -25,7 +25,7 @@ export default function OrdersPage() {
     },
   });
 
-  const filteredOrders = orders?.data.items.filter((order) => {
+  const filteredOrders = orders?.data.items.filter((order: any) => {
     if (filter === 'open') return ['pending', 'partially_filled'].includes(order.status);
     if (filter === 'closed') return ['filled', 'cancelled'].includes(order.status);
     return true;
@@ -61,7 +61,7 @@ export default function OrdersPage() {
         </div>
       ) : (
         <div className="space-y-2">
-          {filteredOrders?.map((order) => (
+          {filteredOrders?.map((order: any) => (
             <OrderCard
               key={order.orderId}
               order={order}

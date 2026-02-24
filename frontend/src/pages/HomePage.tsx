@@ -36,7 +36,7 @@ export default function HomePage() {
       <div className="space-y-3">
         <h2 className="text-lg font-semibold">Market Overview</h2>
         
-        {prices?.data && Object.entries(prices.data).map(([pair, info]) => {
+        {prices?.data && Object.entries(prices.data as Record<string, {price: string; change24h: string}>).map(([pair, info]) => {
           const [base] = pair.split('/');
           const change = parseFloat(info.change24h);
           const isPositive = change >= 0;

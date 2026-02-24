@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { orderApi, userApi } from '../api';
+import { orderApi } from '../api';
 
 interface TradeFormProps {
   pair: string;

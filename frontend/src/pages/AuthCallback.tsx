@@ -7,10 +7,10 @@ import { useTelegramWebApp } from '../hooks/useTelegramWebApp';
 
 export default function AuthCallback() {
   const navigate = useNavigate();
-  const { initData, user: tgUser } = useTelegramWebApp();
+  const { initData } = useTelegramWebApp();
   const { setAuth, setLoading } = useAuthStore();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, error } = useQuery({
     queryKey: ['auth', initData],
     queryFn: () => authApi.login(initData),
     enabled: !!initData,

@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { tradeApi, orderApi, userApi } from '../api';
+import { tradeApi } from '../api';
 import { useTradeStore } from '../store/tradeStore';
-import { useAuthStore } from '../store/authStore';
 import OrderBook from '../components/OrderBook';
 import TradeForm from '../components/TradeForm';
 import RecentTrades from '../components/RecentTrades';
@@ -13,7 +11,6 @@ import PriceChart from '../components/PriceChart';
 export default function TradePage() {
   const [searchParams] = useSearchParams();
   const { selectedPair, setSelectedPair } = useTradeStore();
-  const { isAuthenticated } = useAuthStore();
   const [side, setSide] = useState<'buy' | 'sell'>('buy');
 
   // Update pair from URL

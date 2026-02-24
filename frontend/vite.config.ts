@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import basicSsl from '@vitejs/plugin-basic-ssl';
-import sitemap from 'vite-plugin-sitemap';
 import path from 'path';
 
 export default defineConfig({
@@ -15,16 +14,6 @@ export default defineConfig({
         Buffer: true,
         global: true,
         process: true,
-      },
-    }),
-    sitemap({
-      hostname: 'https://tonhub-exchange.vercel.app',
-      generateRobotsTxt: true,
-      robots: {
-        policies: [
-          { userAgent: '*', allow: '/' },
-          { userAgent: '*', disallow: '/api/' },
-        ],
       },
     }),
   ],

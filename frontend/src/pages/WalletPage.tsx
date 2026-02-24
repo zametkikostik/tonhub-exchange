@@ -57,7 +57,7 @@ export default function WalletPage() {
     <div className="p-4 space-y-4">
       {/* Balance Cards */}
       <div className="grid grid-cols-2 gap-3">
-        {balances?.data?.balances.map((balance) => (
+        {balances?.data?.balances.map((balance: any) => (
           <div key={balance.currency} className="card p-4">
             <div className="text-sm text-gray-400 mb-1">{balance.currency}</div>
             <div className="text-xl font-bold">{parseFloat(balance.available).toFixed(4)}</div>

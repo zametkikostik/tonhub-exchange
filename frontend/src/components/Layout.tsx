@@ -1,6 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { useTelegramWebApp } from '../hooks/useTelegramWebApp';
 
 const navItems = [
   { path: '/', label: 'Home', icon: '🏠' },
@@ -13,7 +12,6 @@ const navItems = [
 export default function Layout() {
   const location = useLocation();
   const { user } = useAuthStore();
-  const { isDark } = useTelegramWebApp();
 
   return (
     <div className="h-full flex flex-col bg-dark-bg">
