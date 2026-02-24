@@ -2,12 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import { config } from '../config';
-import { ApiError, ErrorCodes } from '@tonhub/shared';
-
-export interface AuthPayload {
-  userId: string;
-  telegramId: string;
-}
+import { ApiError, ErrorCodes, AuthPayload } from '../types';
 
 declare global {
   namespace Express {

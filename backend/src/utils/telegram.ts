@@ -1,5 +1,5 @@
 import { createHmac } from 'crypto';
-import { ApiError, ErrorCodes } from '@tonhub/shared';
+import { ApiError, ErrorCodes } from '../types';
 import { StatusCodes } from 'http-status-codes';
 import { config } from '../config';
 

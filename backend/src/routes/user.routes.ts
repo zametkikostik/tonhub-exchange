@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { authMiddleware } from '../middleware/authMiddleware';
 import { prisma } from '../services/prisma';
-import { ApiError, ErrorCodes } from '@tonhub/shared';
+import { ApiError, ErrorCodes } from '../types';
 
 export const userRoutes = Router();
 

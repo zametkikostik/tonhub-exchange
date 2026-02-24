@@ -4,7 +4,7 @@ import { validateTelegramInitData } from '../utils/telegram';
 import { generateTokens } from '../utils/jwt';
 import { prisma } from '../services/prisma';
 import { authMiddleware } from '../middleware/authMiddleware';
-import { ApiError, ErrorCodes } from '@tonhub/shared';
+import { ApiError, ErrorCodes } from '../types';
 
 export const authRoutes = Router();
 

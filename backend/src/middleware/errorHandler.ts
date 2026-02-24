@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '../utils/logger';
-import { ApiError } from '@tonhub/shared';
+import { ApiError } from '../types';
 
 export interface ErrorResponse {
   success: false;
