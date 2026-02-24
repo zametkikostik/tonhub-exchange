@@ -1,0 +1,74 @@
+{
+  "name": "TonHub Exchange",
+  "short_name": "TonHub",
+  "description": "Cryptocurrency exchange inside Telegram Mini Apps. Trade TON, USDT, BTC with low fees on TON blockchain.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#0d1117",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "cryptocurrency", "trading"],
+  "screenshots": [
+    {
+      "src": "/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "TonHub Exchange Trading Interface"
+    },
+    {
+      "src": "/screenshot-2.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "TonHub Mobile Trading"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Trade",
+      "short_name": "Trade",
+      "description": "Start trading cryptocurrency",
+      "url": "/trade",
+      "icons": [{ "src": "/icon-trade.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Wallet",
+      "short_name": "Wallet",
+      "description": "Manage your crypto wallet",
+      "url": "/wallet",
+      "icons": [{ "src": "/icon-wallet.png", "sizes": "96x96" }]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "telegram",
+      "url": "https://t.me/TonHubExchangeBot",
+      "id": "TonHubExchangeBot"
+    }
+  ]
+}

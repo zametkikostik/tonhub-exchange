@@ -1,0 +1,76 @@
+# robots.txt for TonHub Exchange
+# https://tonhub-exchange.vercel.app/robots.txt
+
+User-agent: *
+Allow: /
+Allow: /trade
+Allow: /wallet
+Allow: /orders
+Allow: /settings
+
+# Disallow API endpoints
+Disallow: /api/
+Disallow: /ws
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /static/
+
+# Sitemap location
+Sitemap: https://tonhub-exchange.vercel.app/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Allow: /trade
+Allow: /wallet
+Disallow: /api/
+Disallow: /ws
+
+# Google Mobile
+User-agent: Googlebot-Mobile
+Allow: /
+Allow: /trade
+Disallow: /api/
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Allow: /trade
+Disallow: /api/
+
+# Yandex
+User-agent: Yandex
+Allow: /
+Allow: /trade
+Disallow: /api/
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+Allow: /trade
+Disallow: /api/
+
+# AI Crawlers (for AI search optimization)
+User-agent: GPTBot
+Allow: /
+Allow: /trade
+Allow: /wallet
+Disallow: /api/
+
+User-agent: CCBot
+Allow: /
+Allow: /trade
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /trade
+Disallow: /api/
+
+User-agent: Bytespider
+Allow: /
+Allow: /trade
+Disallow: /api/

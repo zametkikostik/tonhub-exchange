@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TonHub Exchange — Telegram UI Mockup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .phones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .phone {
+      background: #000;
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+
+    .phone-screen {
+      background: #0d1117;
+      border-radius: 32px;
+      overflow: hidden;
+      height: 812px;
+      position: relative;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 20px;
+      font-size: 12px;
+      color: #fff;
+      background: #161b22;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .header-title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #8b949e;
+      font-size: 14px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0098EA, #0077b5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* Content */
+    .content {
+      padding: 20px;
+      color: #fff;
+      height: calc(812px - 140px);
+      overflow-y: auto;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 30px 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #0098EA, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      color: #8b949e;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0098EA, #0077b5);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* Market Cards */
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .market-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+
+    .market-card:hover {
+      border-color: #0098EA;
+    }
+
+    .market-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .coin-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0098EA, #60a5fa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .coin-info h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .coin-info p {
+      color: #8b949e;
+      font-size: 12px;
+    }
+
+    .market-right {
+      text-align: right;
+    }
+
+    .price {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .change {
+      font-size: 14px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .change.positive {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .change.negative {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .action-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-card:hover {
+      border-color: #0098EA;
+      transform: translateY(-2px);
+    }
+
+    .action-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .action-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .action-subtitle {
+      color: #8b949e;
+      font-size: 12px;
+    }
+
+    /* Features */
+    .features {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 24px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .feature-item:last-child {
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      font-size: 24px;
+    }
+
+    .feature-text h4 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .feature-text p {
+      color: #8b949e;
+      font-size: 12px;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #161b22;
+      border-top: 1px solid #30363d;
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0;
+      padding-bottom: 20px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #8b949e;
+      font-size: 12px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .nav-item.active {
+      color: #0098EA;
+    }
+
+    .nav-icon {
+      font-size: 24px;
+    }
+
+    /* Order Book */
+    .order-book {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .order-book-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #0d1117;
+      font-size: 12px;
+      color: #8b949e;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 16px;
+      font-size: 13px;
+      position: relative;
+    }
+
+    .order-row.ask {
+      color: #ef4444;
+    }
+
+    .order-row.bid {
+      color: #10b981;
+    }
+
+    .order-bg {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      opacity: 0.1;
+    }
+
+    .order-bg.ask {
+      right: 0;
+      background: #ef4444;
+    }
+
+    .order-bg.bid {
+      left: 0;
+      background: #10b981;
+    }
+
+    .spread-info {
+      text-align: center;
+      padding: 12px;
+      background: #0d1117;
+      font-size: 13px;
+      color: #8b949e;
+      border-top: 1px solid #30363d;
+      border-bottom: 1px solid #30363d;
+    }
+
+    /* Trade Form */
+    .trade-form {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .trade-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .trade-tab {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .trade-tab.buy {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .trade-tab.buy.active {
+      background: #10b981;
+      color: white;
+    }
+
+    .trade-tab.sell {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .trade-tab.sell.active {
+      background: #ef4444;
+      color: white;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: #8b949e;
+      margin-bottom: 6px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #0098EA;
+    }
+
+    .btn-trade {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .btn-trade.buy {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-trade.sell {
+      background: #ef4444;
+      color: white;
+    }
+
+    /* Balance Cards */
+    .balance-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .balance-card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .balance-currency {
+      font-size: 12px;
+      color: #8b949e;
+      margin-bottom: 8px;
+    }
+
+    .balance-amount {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .balance-value {
+      font-size: 14px;
+      color: #8b949e;
+    }
+
+    /* Labels */
+    .label {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .label.buy {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .label.sell {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .label.pending {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+
+    .label.filled {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    /* Chart placeholder */
+    .chart-placeholder {
+      background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8b949e;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 150px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 150'%3E%3Cpath d='M0,100 Q50,80 100,120 T200,60 T300,90 T400,40' fill='none' stroke='%230098EA' stroke-width='2'/%3E%3C/svg%3E") no-repeat;
+      background-size: 100% 100%;
+    }
+
+    /* Description */
+    .description {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 40px;
+    }
+
+    .description h2 {
+      color: #1a1a2e;
+      margin-bottom: 20px;
+    }
+
+    .description ul {
+      margin-left: 20px;
+      color: #333;
+    }
+
+    .description li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 TonHub Exchange — Telegram Mini App UI</h1>
+
+    <div class="phones-grid">
+      <!-- Phone 1: Home Page -->
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+          </div>
+
+          <div class="header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="user-avatar">TH</div>
+              <span class="header-title">TonHub</span>
+            </div>
+            <div class="header-user">
+              <span>alex_crypto</span>
+              <div class="user-avatar" style="width: 28px; height: 28px; font-size: 12px;">👤</div>
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="hero">
+              <div class="hero-icon">🚀</div>
+              <div class="hero-title">TonHub Exchange</div>
+              <div class="hero-subtitle">Trade crypto on TON blockchain</div>
+              <button class="btn-primary">🔓 Connect Wallet</button>
+            </div>
+
+            <div class="section-title">📊 Market Overview</div>
+
+            <div class="market-card">
+              <div class="market-left">
+                <div class="coin-icon">TON</div>
+                <div class="coin-info">
+                  <h3>TON/USDT</h3>
+                  <p>Vol: 1.2M</p>
+                </div>
+              </div>
+              <div class="market-right">
+                <div class="price">$5.42</div>
+                <div class="change positive">+2.34%</div>
+              </div>
+            </div>
+
+            <div class="market-card">
+              <div class="market-left">
+                <div class="coin-icon" style="background: linear-gradient(135deg, #f7931a, #ffb347);">BTC</div>
+                <div class="coin-info">
+                  <h3>TON/BTC</h3>
+                  <p>Vol: 450K</p>
+                </div>
+              </div>
+              <div class="market-right">
+                <div class="price">₿0.00013</div>
+                <div class="change negative">-0.52%</div>
+              </div>
+            </div>
+
+            <div class="market-card">
+              <div class="market-left">
+                <div class="coin-icon" style="background: linear-gradient(135deg, #00ff88, #00cc6a);">NOT</div>
+                <div class="coin-info">
+                  <h3>NOT/TON</h3>
+                  <p>Vol: 890K</p>
+                </div>
+              </div>
+              <div class="market-right">
+                <div class="price">TON 0.0052</div>
+                <div class="change positive">+5.67%</div>
+              </div>
+            </div>
+
+            <div class="quick-actions">
+              <div class="action-card">
+                <div class="action-icon">📊</div>
+                <div class="action-title">Trade</div>
+                <div class="action-subtitle">Buy & Sell</div>
+              </div>
+              <div class="action-card">
+                <div class="action-icon">💼</div>
+                <div class="action-title">Wallet</div>
+                <div class="action-subtitle">Deposit</div>
+              </div>
+            </div>
+
+            <div class="features">
+              <div class="feature-item">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-text">
+                  <h4>Fast Trading</h4>
+                  <p>Lightning-fast order matching</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-text">
+                  <h4>Secure</h4>
+                  <p>Industry-leading security</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">💰</div>
+                <div class="feature-text">
+                  <h4>Low Fees</h4>
+                  <p>Starting at 0.1%</p>
+                </div>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon">📱</div>
+                <div class="feature-text">
+                  <h4>Mobile First</h4>
+                  <p>Telegram Mini Apps</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-nav">
+            <div class="nav-item active">
+              <span class="nav-icon">🏠</span>
+              <span>Home</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">📊</span>
+              <span>Trade</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">💼</span>
+              <span>Wallet</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">📋</span>
+              <span>Orders</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">⚙️</span>
+              <span>Settings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 2: Trade Page -->
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+          </div>
+
+          <div class="header">
+            <span class="header-title">← Trade</span>
+            <div class="header-user">
+              <span>💰 $1,234</span>
+            </div>
+          </div>
+
+          <div class="content" style="height: auto; padding-bottom: 80px;">
+            <div style="display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px;">
+              <button class="btn-primary" style="padding: 8px 16px; font-size: 14px;">TON/USDT</button>
+              <button class="btn-primary" style="padding: 8px 16px; font-size: 14px; background: #30363d;">TON/BTC</button>
+              <button class="btn-primary" style="padding: 8px 16px; font-size: 14px; background: #30363d;">NOT/TON</button>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <div style="font-size: 28px; font-weight: 700;">$5.42</div>
+              <div style="color: #10b981; font-size: 14px;">▲ +2.34%</div>
+              <div style="color: #8b949e; font-size: 12px; margin-top: 8px;">
+                24h H: $5.56 &nbsp; L: $5.28
+              </div>
+            </div>
+
+            <div class="chart-placeholder">
+              <div class="chart-line"></div>
+              <span>📈 Price Chart</span>
+            </div>
+
+            <div class="order-book">
+              <div class="order-book-header">
+                <span>Price (USDT)</span>
+                <span>Amount</span>
+              </div>
+              
+              <div class="order-row ask">
+                <div class="order-bg ask" style="width: 60%;"></div>
+                <span style="position: relative; z-index: 1;">$5.43</span>
+                <span style="position: relative; z-index: 1;">1,200</span>
+              </div>
+              <div class="order-row ask">
+                <div class="order-bg ask" style="width: 40%;"></div>
+                <span style="position: relative; z-index: 1;">$5.42</span>
+                <span style="position: relative; z-index: 1;">800</span>
+              </div>
+              
+              <div class="spread-info">
+                Spread: $0.01 (0.18%)
+              </div>
+              
+              <div class="order-row bid">
+                <div class="order-bg bid" style="width: 75%;"></div>
+                <span style="position: relative; z-index: 1;">$5.41</span>
+                <span style="position: relative; z-index: 1;">1,500</span>
+              </div>
+              <div class="order-row bid">
+                <div class="order-bg bid" style="width: 100%;"></div>
+                <span style="position: relative; z-index: 1;">$5.40</span>
+                <span style="position: relative; z-index: 1;">2,000</span>
+              </div>
+              <div class="order-row bid">
+                <div class="order-bg bid" style="width: 48%;"></div>
+                <span style="position: relative; z-index: 1;">$5.39</span>
+                <span style="position: relative; z-index: 1;">950</span>
+              </div>
+            </div>
+
+            <div class="trade-form">
+              <div class="trade-tabs">
+                <button class="trade-tab buy active">Buy 🟢</button>
+                <button class="trade-tab sell">Sell 🔴</button>
+              </div>
+
+              <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                <button style="flex: 1; padding: 6px; background: #0098EA; border: none; border-radius: 6px; color: white; font-size: 12px;">Limit</button>
+                <button style="flex: 1; padding: 6px; background: transparent; border: 1px solid #30363d; border-radius: 6px; color: #8b949e; font-size: 12px;">Market</button>
+              </div>
+
+              <div class="form-group">
+                <label>Price (USDT)</label>
+                <input type="number" value="5.42" />
+              </div>
+
+              <div class="form-group">
+                <label>Amount (TON)</label>
+                <input type="number" placeholder="0.00" />
+              </div>
+
+              <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 12px;">
+                <span style="color: #8b949e;">Total</span>
+                <span>$0.00</span>
+              </div>
+
+              <button class="btn-trade buy">🟢 Buy TON</button>
+            </div>
+          </div>
+
+          <div class="bottom-nav">
+            <div class="nav-item">
+              <span class="nav-icon">🏠</span>
+              <span>Home</span>
+            </div>
+            <div class="nav-item active">
+              <span class="nav-icon">📊</span>
+              <span>Trade</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">💼</span>
+              <span>Wallet</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">📋</span>
+              <span>Orders</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">⚙️</span>
+              <span>Settings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone 3: Wallet Page -->
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+          </div>
+
+          <div class="header">
+            <span class="header-title">← Wallet</span>
+          </div>
+
+          <div class="content" style="height: auto; padding-bottom: 80px;">
+            <div class="section-title" style="margin-bottom: 16px;">💼 Your Balances</div>
+
+            <div class="balance-grid">
+              <div class="balance-card">
+                <div class="balance-currency">TON</div>
+                <div class="balance-amount">150.50</div>
+                <div class="balance-value">$815.71</div>
+              </div>
+              <div class="balance-card">
+                <div class="balance-currency">USDT</div>
+                <div class="balance-amount">1,000.00</div>
+                <div class="balance-value">$1,000.00</div>
+              </div>
+              <div class="balance-card">
+                <div class="balance-currency">BTC</div>
+                <div class="balance-amount">0.00234</div>
+                <div class="balance-value">$152.34</div>
+              </div>
+              <div class="balance-card">
+                <div class="balance-currency">NOT</div>
+                <div class="balance-amount">5,000</div>
+                <div class="balance-value">$26.00</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+              <button class="btn-primary" style="flex: 1;">💰 Deposit</button>
+              <button class="btn-primary" style="flex: 1; background: #30363d;">💸 Withdraw</button>
+            </div>
+
+            <div class="section-title" style="margin-bottom: 16px;">📥 Deposit TON</div>
+
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px;">
+              <div style="color: #8b949e; font-size: 12px; margin-bottom: 12px;">Your deposit address</div>
+              <div style="font-family: monospace; font-size: 14px; word-break: break-all; margin-bottom: 8px;">EQB7a8xKpN3mVqR8sT2uW4yZ5aB6cD7eF8gH9iJ0kL1mN</div>
+              <div style="color: #0098EA; font-size: 14px; margin-bottom: 16px;">Memo: 12345</div>
+              <button style="padding: 10px 24px; background: #30363d; border: none; border-radius: 8px; color: white; cursor: pointer;">📋 Copy Address</button>
+              <div style="color: #8b949e; font-size: 11px; margin-top: 16px;">⚠️ Send only TON to this address</div>
+            </div>
+
+            <div class="section-title" style="margin-bottom: 16px;">🔗 Connect TON Wallet</div>
+
+            <div style="background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px;">
+              <button class="btn-primary" style="width: 100%; margin-bottom: 16px;">🦊 Connect Tonkeeper</button>
+              
+              <div style="color: #8b949e; font-size: 12px; margin-bottom: 8px;">Connected wallets:</div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: #10b981;">✓</span>
+                <span style="font-family: monospace; font-size: 13px;">0x7a...3b9f</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-nav">
+            <div class="nav-item">
+              <span class="nav-icon">🏠</span>
+              <span>Home</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">📊</span>
+              <span>Trade</span>
+            </div>
+            <div class="nav-item active">
+              <span class="nav-icon">💼</span>
+              <span>Wallet</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">📋</span>
+              <span>Orders</span>
+            </div>
+            <div class="nav-item">
+              <span class="nav-icon">⚙️</span>
+              <span>Settings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="description">
+      <h2>📱 TonHub Exchange — Telegram Mini App UI Mockup</h2>
+      <p style="margin-bottom: 20px; color: #666;">Это визуальная демонстрация того, как будет выглядеть криптобиржа TonHub Exchange в Telegram Mini Apps.</p>
+      
+      <h3 style="margin-bottom: 12px;">Показанные экраны:</h3>
+      <ul style="margin-bottom: 20px;">
+        <li><strong>Home (слева)</strong> — Главная страница с обзором рынка и быстрыми действиями</li>
+        <li><strong>Trade (центр)</strong> — Страница торговли с графиком, стаканом и формой ордера</li>
+        <li><strong>Wallet (справа)</strong> — Кошелёк с балансами, депозитом и подключением TON</li>
+      </ul>
+
+      <h3 style="margin-bottom: 12px;">Ключевые особенности:</h3>
+      <ul style="margin-bottom: 20px;">
+        <li>🎨 Тёмная тема по умолчанию</li>
+        <li>📱 Адаптивный дизайн под мобильные устройства</li>
+        <li>⚡ Bottom navigation для быстрой навигации</li>
+        <li>🔵 TON blue акцентный цвет (#0098EA)</li>
+        <li>🟢/🔴 Зелёный для buy, красный для sell</li>
+        <li>📊 Real-time order book с визуализацией</li>
+      </ul>
+
+      <h3 style="margin-bottom: 12px;">Следующие шаги:</h3>
+      <ul>
+        <li>Открыть файл в браузере для просмотра UI</li>
+        <li>Использовать как референс для разработки</li>
+        <li>Показать команде/инвесторам для демонстрации</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Add interactivity to buttons
+    document.querySelectorAll('.trade-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        this.parentElement.querySelectorAll('.trade-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', function() {
+        // Find parent phone screen
+        const phoneScreen = this.closest('.phone-screen');
+        if (phoneScreen) {
+          phoneScreen.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

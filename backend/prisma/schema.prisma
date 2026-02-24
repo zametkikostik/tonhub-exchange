@@ -1,0 +1,279 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USERS
+// ============================================
+
+model User {
+  id              BigInt      @id @default(autoincrement())
+  telegramId      BigInt      @unique @map("telegram_id")
+  username        String?
+  firstName       String?     @map("first_name")
+  lastName        String?     @map("last_name")
+  languageCode    String      @default("en") @map("language_code")
+  isPremium       Boolean     @default(false) @map("is_premium")
+  tonWalletAddress String?    @map("ton_wallet_address")
+  twoFactorSecret String?     @map("two_factor_secret")
+  referralCode    String      @unique @default(cuid()) @map("referral_code")
+  referredBy      BigInt?     @map("referred_by")
+  referrer        User?       @relation("Referrals", fields: [referredBy], references: [telegramId])
+  referrals       User[]      @relation("Referrals")
+  balances        Balance[]
+  orders          Order[]
+  transactions    Transaction[]
+  withdrawalWhitelist WithdrawalWhitelist[]
+  sessions        Session[]
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  @@index([telegramId])
+  @@index([referralCode])
+  @@map("users")
+}
+
+// ============================================
+// SESSIONS
+// ============================================
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       BigInt   @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshToken String   @map("refresh_token")
+  expiresAt    DateTime @map("expires_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+  ipAddress    String?  @map("ip_address")
+  userAgent    String?  @map("user_agent")
+
+  @@index([userId])
+  @@index([refreshToken])
+  @@map("sessions")
+}
+
+// ============================================
+// BALANCES
+// ============================================
+
+model Balance {
+  id         BigInt   @id @default(autoincrement())
+  userId     BigInt   @map("user_id")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currency   String
+  available  Decimal  @default(0) @db.Decimal(32, 18)
+  locked     Decimal  @default(0) @db.Decimal(32, 18)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, currency])
+  @@index([userId])
+  @@map("balances")
+}
+
+// ============================================
+// ORDERS
+// ============================================
+
+enum OrderSide {
+  BUY
+  SELL
+}
+
+enum OrderType {
+  MARKET
+  LIMIT
+}
+
+enum OrderStatus {
+  PENDING
+  PARTIALLY_FILLED
+  FILLED
+  CANCELLED
+  REJECTED
+}
+
+model Order {
+  id              BigInt      @id @default(autoincrement())
+  orderId         String      @unique @default(cuid()) @map("order_id")
+  userId          BigInt      @map("user_id")
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pair            String
+  side            OrderSide
+  type            OrderType
+  status          OrderStatus @default(PENDING)
+  price           Decimal?    @db.Decimal(32, 18)
+  quantity        Decimal     @db.Decimal(32, 18)
+  filledQuantity  Decimal     @default(0) @db.Decimal(32, 18) @map("filled_quantity")
+  total           Decimal?    @db.Decimal(32, 18)
+  fee             Decimal     @default(0) @db.Decimal(32, 18)
+  trades          Trade[]
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+  filledAt        DateTime?   @map("filled_at")
+  cancelledAt     DateTime?   @map("cancelled_at")
+
+  @@index([userId])
+  @@index([pair])
+  @@index([status])
+  @@index([orderId])
+  @@map("orders")
+}
+
+// ============================================
+// TRADES
+// ============================================
+
+model Trade {
+  id            BigInt   @id @default(autoincrement())
+  tradeId       String   @unique @default(cuid()) @map("trade_id")
+  orderId       BigInt   @map("order_id")
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  makerOrderId  BigInt   @map("maker_order_id")
+  pair          String
+  price         Decimal  @db.Decimal(32, 18)
+  quantity      Decimal  @db.Decimal(32, 18)
+  fee           Decimal  @db.Decimal(32, 18)
+  feeCurrency   String   @map("fee_currency")
+  isMaker       Boolean  @default(false) @map("is_maker")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([pair])
+  @@index([orderId])
+  @@index([createdAt])
+  @@map("trades")
+}
+
+// ============================================
+// TRANSACTIONS
+// ============================================
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRADE
+  FEE
+  REFERRAL
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model Transaction {
+  id            BigInt            @id @default(autoincrement())
+  txId          String            @unique @default(cuid()) @map("tx_id")
+  userId        BigInt            @map("user_id")
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          TransactionType
+  status        TransactionStatus @default(PENDING)
+  currency      String
+  amount        Decimal           @db.Decimal(32, 18)
+  fee           Decimal           @default(0) @db.Decimal(32, 18)
+  txHash        String?           @map("tx_hash")
+  fromAddress   String?           @map("from_address")
+  toAddress     String?           @map("to_address")
+  memo          String?
+  memoBigNum    BigInt?           @map("memo_big_num")
+  confirmations Int               @default(0)
+  requiredConfirmations Int       @default(1) @map("required_confirmations")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  completedAt   DateTime?         @map("completed_at")
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([txHash])
+  @@map("transactions")
+}
+
+// ============================================
+// WITHDRAWAL WHITELIST
+// ============================================
+
+model WithdrawalWhitelist {
+  id          BigInt   @id @default(autoincrement())
+  userId      BigInt   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address     String
+  label       String?
+  isVerified  Boolean  @default(false) @map("is_verified")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, address])
+  @@index([userId])
+  @@map("withdrawal_whitelist")
+}
+
+// ============================================
+// DEPOSIT ADDRESSES
+// ============================================
+
+model DepositAddress {
+  id          BigInt   @id @default(autoincrement())
+  userId      BigInt   @unique @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address     String   @unique
+  memo        String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([address])
+  @@map("deposit_addresses")
+}
+
+// ============================================
+// SYSTEM CONFIG
+// ============================================
+
+model SystemConfig {
+  id        Int      @id @default(1)
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_config")
+}
+
+// ============================================
+// AUDIT LOG
+// ============================================
+
+enum AuditAction {
+  LOGIN
+  LOGOUT
+  DEPOSIT
+  WITHDRAWAL
+  ORDER_CREATE
+  ORDER_CANCEL
+  TRADE
+  SETTINGS_CHANGE
+  SECURITY_CHANGE
+}
+
+model AuditLog {
+  id        BigInt      @id @default(autoincrement())
+  userId    BigInt?     @map("user_id")
+  action    AuditAction
+  entity    String?
+  entityId  String?     @map("entity_id")
+  oldData   String?     @map("old_data")
+  newData   String?     @map("new_data")
+  ipAddress String?     @map("ip_address")
+  userAgent String?     @map("user_agent")
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

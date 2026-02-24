@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "name": "tonhub-exchange",
+  "buildCommand": "npm run build:frontend",
+  "outputDirectory": "frontend/dist",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://tonhub-backend.vercel.app/api/$1"
+    },
+    {
+      "source": "/ws",
+      "destination": "https://tonhub-backend.vercel.app/ws"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "VITE_API_URL": "https://tonhub-backend.vercel.app/api",
+    "VITE_TELEGRAM_BOT_USERNAME": "TonHubExchangeBot"
+  }
+}
